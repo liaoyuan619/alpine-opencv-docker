@@ -1,0 +1,12 @@
+diff -Naur opencv-3.3.0/modules/python/src2/cv2.cpp opencv-3.3.0-a/modules/python/src2/cv2.cpp
+--- opencv-3.3.0/modules/python/src2/cv2.cpp	2017-08-04 07:58:23.000000000 +0800
++++ opencv-3.3.0-a/modules/python/src2/cv2.cpp	2020-03-20 18:53:47.914680393 +0800
+@@ -851,7 +851,7 @@
+     (void)name;
+     if(!obj || obj == Py_None)
+         return true;
+-    char* str = PyString_AsString(obj);
++    const char* str = PyString_AsString(obj);
+     if(!str)
+         return false;
+     value = String(str);

@@ -1,9 +1,11 @@
 FROM mgc/android-mgc:v1
 
-ENV OPENCV http://192.168.100.158/3.3.0.tar.gz
 ENV OPENCV_VER 3.3.0
+ENV OPENCV https://github.com/opencv/opencv/archive/3.3.0.tar.gz
 ENV CC /usr/bin/clang
 ENV CXX /usr/bin/clang++
+
+COPY ./0001-opencv3.3.0-compile-warning-fix.patch /root
 
 RUN apk add --no-cache --virtual=build-dependencies \
     linux-headers musl libxml2-dev libxslt-dev libffi-dev g++ \
@@ -17,8 +19,10 @@ RUN apk add --no-cache --virtual=build-dependencies \
     \
     && mkdir -p /opt && \ 
     cd /opt && \
+    mv /root/0001-opencv3.3.0-compile-warning-fix.patch . && \
     curl -L $OPENCV | tar zx && \
     cd opencv-$OPENCV_VER && \
+    patch -p1 < ../0001-opencv3.3.0-compile-warning-fix.patch && \
     mkdir build && \
     cd build &&  \
     cmake -G Ninja \
